@@ -1,0 +1,59 @@
+# Environment & secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+pip-log.txt
+
+# Data files (large raw data)
+data/raw/telegram_messages/
+data/raw/images/
+*.json
+!medical_warehouse/**/*.json
+data/processed/
+*.csv
+
+# dbt
+medical_warehouse/target/
+medical_warehouse/dbt_packages/
+medical_warehouse/logs/
+
+# Logs
+logs/*.log
+logs/*.txt
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.override.yml
+
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+*.cover
