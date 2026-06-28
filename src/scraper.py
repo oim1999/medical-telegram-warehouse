@@ -5,9 +5,9 @@ Telegram channel scraper for Ethiopian medical business data.
 Extracts messages and images from public Telegram channels using Telethon.
 
 Channels targeted:
-  - CheMed (@CheMed2)
+  - CheMed (@CheMed123)
   - Lobelia Cosmetics (@lobelia4cosmetics)
-  - Tikvah Pharma (@tikvahethiopiamedicalcenter)
+  - Tikvah Pharma (@tikvahpharma)
   - Additional channels from et.tgstat.com/medicine
 
 Data Lake structure:
@@ -60,11 +60,11 @@ logger.add(
 
 # ── Target channels ───────────────────────────────────────────────────────────
 DEFAULT_CHANNELS = [
-    "CheMed2",                        # CheMed medical products
-    "lobelia4cosmetics",               # Lobelia Cosmetics
-    "tikvahethiopiamedicalcenter",     # Tikvah Pharma
-    "DoctorsEthiopia",                 # Additional medical channel
-    "ethiopianpharmacy",               # Additional pharmacy channel
+    "CheMed123",                        
+    "lobelia4cosmetics",               
+    "tikvahpharma",                     
+    "medicalequipmentspare",               
+    "EAHCI",                           
 ]
 
 

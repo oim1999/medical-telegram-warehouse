@@ -1,0 +1,121 @@
+version: 2
+
+models:
+  - name: dim_channels
+    description: >
+      Channel dimension table. One row per Telegram channel with
+      classification, date range, and aggregate engagement statistics.
+    columns:
+      - name: channel_key
+        description: "Surrogate integer key for the channel (stable row_number)."
+        tests:
+          - unique
+          - not_null
+      - name: channel_name
+        description: "Telegram channel username (natural key)."
+        tests:
+          - unique
+          - not_null
+      - name: channel_type
+        description: "Business classification: Medical, Cosmetics, Pharmaceutical, or Other."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Medical', 'Cosmetics', 'Pharmaceutical', 'Other']
+      - name: first_post_date
+        description: "Timestamp of the earliest scraped message in this channel."
+      - name: last_post_date
+        description: "Timestamp of the most recent scraped message in this channel."
+      - name: total_posts
+        description: "Total number of messages scraped from this channel."
+        tests:
+          - not_null
+      - name: avg_views
+        description: "Average view count across all messages in this channel."
+      - name: avg_forwards
+        description: "Average forward count across all messages in this channel."
+      - name: total_images
+        description: "Count of messages that include a downloaded image."
+
+  - name: dim_dates
+    description: >
+      Date dimension table generated from the date range of scraped messages.
+      Provides calendar attributes for time-based analysis.
+    columns:
+      - name: date_key
+        description: "Integer surrogate key in YYYYMMDD format (e.g., 20240115)."
+        tests:
+          - unique
+          - not_null
+      - name: full_date
+        description: "Calendar date (DATE type)."
+        tests:
+          - unique
+          - not_null
+      - name: day_of_week
+        description: "Day of week integer (0=Sunday, 6=Saturday)."
+      - name: day_name
+        description: "Full day name (e.g., 'Monday')."
+      - name: week_of_year
+        description: "ISO week number (1–53)."
+      - name: month
+        description: "Month number (1–12)."
+      - name: month_name
+        description: "Full month name (e.g., 'January')."
+      - name: quarter
+        description: "Calendar quarter (1–4)."
+      - name: year
+        description: "Four-digit year."
+      - name: is_weekend
+        description: "True if the date falls on Saturday or Sunday."
+
+  - name: fct_messages
+    description: >
+      Central fact table of the star schema. One row per Telegram message,
+      joined to channel and date dimensions. Contains engagement metrics
+      and media metadata.
+    columns:
+      - name: fact_key
+        description: "Surrogate integer key for the fact row."
+        tests:
+          - unique
+          - not_null
+      - name: message_id
+        description: "Telegram message identifier."
+        tests:
+          - not_null
+      - name: channel_key
+        description: "Foreign key to dim_channels."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: "Foreign key to dim_dates."
+        tests:
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: message_text
+        description: "Full text of the Telegram message."
+      - name: message_length
+        description: "Character length of message_text."
+      - name: view_count
+        description: "Number of views (non-negative integer)."
+        tests:
+          - not_null
+      - name: forward_count
+        description: "Number of forwards (non-negative integer)."
+        tests:
+          - not_null
+      - name: has_media
+        description: "Boolean: true if message had any media."
+      - name: has_image
+        description: "Boolean: true if a photo was downloaded."
+      - name: image_path
+        description: "Relative filesystem path to the downloaded image."
+      - name: message_date
+        description: "Original UTC post timestamp."
+      - name: scraped_at
+        description: "UTC timestamp when the record was scraped."

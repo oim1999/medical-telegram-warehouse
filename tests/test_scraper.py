@@ -44,7 +44,7 @@ class TestSerializeMessage:
     def test_basic_text_message(self):
         record = serialize_message_dict(
             message_id=1001,
-            channel_name="CheMed2",
+            channel_name="CheMed123",
             date=datetime(2024, 6, 1, 12, 0, tzinfo=timezone.utc),
             text="Paracetamol 500mg available",
             has_media=False,
@@ -53,7 +53,7 @@ class TestSerializeMessage:
             forwards=10,
         )
         assert record["message_id"] == 1001
-        assert record["channel_name"] == "CheMed2"
+        assert record["channel_name"] == "CheMed123"
         assert record["message_text"] == "Paracetamol 500mg available"
         assert record["has_media"] is False
         assert record["views"] == 250
@@ -77,7 +77,7 @@ class TestSerializeMessage:
     def test_empty_text_message(self):
         record = serialize_message_dict(
             message_id=3003,
-            channel_name="tikvahethiopiamedicalcenter",
+            channel_name="tikvahpharma",
             date=datetime(2024, 6, 3, tzinfo=timezone.utc),
             text=None,
             has_media=True,
@@ -117,12 +117,12 @@ class TestDataLakePartitioning:
         """Written JSON files are valid and readable."""
         records = [
             serialize_message_dict(
-                1, "CheMed2",
+                1, "CheMed123",
                 datetime(2024, 6, 1, tzinfo=timezone.utc),
                 "Test message", False, None, 100, 5,
             )
         ]
-        out = tmp_path / "CheMed2.json"
+        out = tmp_path / "CheMed123.json"
         with open(out, "w") as f:
             json.dump(records, f)
 
@@ -131,7 +131,7 @@ class TestDataLakePartitioning:
 
         assert len(loaded) == 1
         assert loaded[0]["message_id"] == 1
-        assert loaded[0]["channel_name"] == "CheMed2"
+        assert loaded[0]["channel_name"] == "CheMed123"
 
 
 class TestDataQuality:
