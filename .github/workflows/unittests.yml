@@ -44,6 +44,6 @@ jobs:
           POSTGRES_DB: medical_warehouse_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: root
-          TELEGRAM_API_ID: "37984552"
-          TELEGRAM_API_HASH: "0f80c66c526f0169ef9d078026d97415"
+          TELEGRAM_API_ID: ""
+          TELEGRAM_API_HASH: ""
         run: pytest tests/ -v --tb=short
