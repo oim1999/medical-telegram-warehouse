@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_DB: medical_warehouse_test
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: root
         ports:
           - 5432:5432
         options: >-
@@ -43,7 +43,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_DB: medical_warehouse_test
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          TELEGRAM_API_ID: "12345"
-          TELEGRAM_API_HASH: "dummy_hash_for_ci"
+          POSTGRES_PASSWORD: root
+          TELEGRAM_API_ID: "37984552"
+          TELEGRAM_API_HASH: "0f80c66c526f0169ef9d078026d97415"
         run: pytest tests/ -v --tb=short

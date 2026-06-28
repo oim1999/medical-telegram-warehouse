@@ -1,0 +1,59 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw Telegram data scraped by the Telethon scraper."
+    tables:
+      - name: telegram_messages
+        description: "Raw messages loaded from JSON data lake files."
+        columns:
+          - name: message_id
+            description: "Unique Telegram message identifier."
+          - name: channel_name
+            description: "Telegram channel username."
+          - name: message_date
+            description: "UTC timestamp when the message was posted."
+          - name: message_text
+            description: "Full text content of the message."
+          - name: has_media
+            description: "Whether the message contains any media."
+          - name: image_path
+            description: "Local path to downloaded image, if applicable."
+          - name: views
+            description: "Number of views on the message."
+          - name: forwards
+            description: "Number of times the message was forwarded."
+          - name: scraped_at
+            description: "UTC timestamp when the record was scraped."
+
+models:
+  - name: stg_telegram_messages
+    description: >
+      Cleaned and standardized Telegram messages. Applies type casting,
+      deduplication, and adds computed fields (message_length, has_image).
+    columns:
+      - name: message_id
+        description: "Telegram message ID (cast to BIGINT)."
+        tests:
+          - not_null
+      - name: channel_name
+        description: "Cleaned channel username."
+        tests:
+          - not_null
+      - name: message_date
+        description: "UTC post timestamp (TIMESTAMPTZ)."
+      - name: message_text
+        description: "Trimmed message text."
+      - name: message_length
+        description: "Character count of message text (0 for empty messages)."
+      - name: has_media
+        description: "True if message contained any media attachment."
+      - name: has_image
+        description: "True if a photo was downloaded and stored locally."
+      - name: image_path
+        description: "Relative path to the downloaded image file."
+      - name: view_count
+        description: "Non-negative view count (floored at 0)."
+      - name: forward_count
+        description: "Non-negative forward count (floored at 0)."
