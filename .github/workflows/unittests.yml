@@ -43,7 +43,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_DB: medical_warehouse_test
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: 
+          POSTGRES_PASSWORD: root
           TELEGRAM_API_ID: ""
           TELEGRAM_API_HASH: ""
         run: pytest tests/ -v --tb=short
