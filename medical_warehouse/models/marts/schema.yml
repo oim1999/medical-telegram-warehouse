@@ -119,3 +119,47 @@ models:
         description: "Original UTC post timestamp."
       - name: scraped_at
         description: "UTC timestamp when the record was scraped."
+
+  - name: fct_image_detections
+    description: >
+      Fact table at object-detection grain. One row per detected object
+      per image, produced by YOLOv8 and joined to fct_messages. Used to
+      analyze visual content patterns (promotional vs. product_display
+      vs. lifestyle) and correlate them with message engagement.
+    columns:
+      - name: detection_key
+        description: "Surrogate integer key for the detection row."
+        tests:
+          - unique
+          - not_null
+      - name: message_id
+        description: "Telegram message ID this image belongs to."
+        tests:
+          - not_null
+      - name: channel_key
+        description: "Foreign key to dim_channels."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: "Foreign key to dim_dates."
+        tests:
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: detected_class
+        description: "COCO object class detected by YOLOv8 (e.g., 'person', 'bottle')."
+      - name: confidence_score
+        description: "YOLOv8 detection confidence score (0.0 to 1.0)."
+      - name: image_category
+        description: "Derived classification of the image."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['promotional', 'product_display', 'lifestyle', 'other']
+      - name: view_count
+        description: "View count of the message this image belongs to (denormalized)."
+      - name: forward_count
+        description: "Forward count of the message this image belongs to (denormalized)."
