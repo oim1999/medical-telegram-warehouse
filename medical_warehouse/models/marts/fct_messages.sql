@@ -51,7 +51,7 @@ final as (
     from messages m
 
     -- Join to channel dimension
-    inner join channels c
+    left join channels c
         on m.channel_name = c.channel_name
 
     -- Join to date dimension

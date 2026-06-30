@@ -27,6 +27,22 @@ sources:
           - name: scraped_at
             description: "UTC timestamp when the record was scraped."
 
+      - name: image_detections
+        description: "Raw YOLOv8 detection results loaded from data/processed/yolo_detections.csv."
+        columns:
+          - name: message_id
+            description: "Telegram message ID the image belongs to."
+          - name: channel_name
+            description: "Telegram channel username."
+          - name: image_path
+            description: "Relative path to the source image file."
+          - name: detected_class
+            description: "COCO object class detected by YOLOv8 (e.g., 'person', 'bottle')."
+          - name: confidence_score
+            description: "YOLOv8 detection confidence (0.0 to 1.0)."
+          - name: image_category
+            description: "Derived classification: promotional, product_display, lifestyle, or other."
+
 models:
   - name: stg_telegram_messages
     description: >
